@@ -12,7 +12,7 @@ import {
 
 import { Constants } from 'expo';
 
-const token = 'HaRGyLVbLuQc6Mtpl8CnUudx';
+const token = '';
 
 const headers = {
   Accept: 'application/json',
