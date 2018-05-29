@@ -34,12 +34,12 @@ export default class FetchExample extends React.Component {
       method: 'GET',
     });
 
-    const payload = await response.json().then(deployments => {
-      this.setState({
-        isLoading: false,
-        dataSource: deployments,
-      });
+    const payload = await response.json();
+    const deployments = await this.setState({
+      isLoading: false,
+      dataSource: payload,
     });
+    // return deployments;
   };
 
   componentWillMount() {
@@ -48,6 +48,7 @@ export default class FetchExample extends React.Component {
 
   _onPress = () => {
     Alert.alert('Button pressed!', 'You did it!');
+    // console.log(this.deployments)
   };
   _keyExtractor = item => item.uid;
 
@@ -73,7 +74,7 @@ export default class FetchExample extends React.Component {
               <View style={{ backgroundColor: 'yellow' }}>
                 <View>
                   <Text>
-                   {' Name: '}
+                    {' Name: '}
                     {item.name}
                     {' '}
                   </Text>
@@ -81,7 +82,7 @@ export default class FetchExample extends React.Component {
                 <View>
 
                   <Text>
-                  {'  URL: '}
+                    {'  URL: '}
                     {item.url}
                     {' '}
                   </Text>
@@ -96,14 +97,14 @@ export default class FetchExample extends React.Component {
                 <View>
 
                   <Text>
-                  {'     '}
+                    {'     '}
                     {item.type} {' '}
                   </Text>
                 </View>
                 <View>
 
-                  <Text> 
-                  {'  Created At: '}
+                  <Text>
+                    {'  Created At: '}
                     {item.created ? new Date(item.created).toString() : null}
                     {' '}
                     {' '}
@@ -111,11 +112,11 @@ export default class FetchExample extends React.Component {
                 </View>
 
               </View>
-              
+
             </TouchableHighlight>}
           keyExtractor={this._keyExtractor}
         />
-        
+
       </View>
     );
   }
