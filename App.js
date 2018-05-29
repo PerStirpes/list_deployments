@@ -42,7 +42,7 @@ export default class FetchExample extends React.Component {
     });
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this._loadDeploymentsAsync();
   }
 
