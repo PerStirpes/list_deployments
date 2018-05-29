@@ -1,41 +1,36 @@
 import React from 'react';
 import {
-  FlatList,
   ActivityIndicator,
-  Text,
-  View,
   Alert,
+  FlatList,
+  Linking,
   StyleSheet,
+  Text,
   TouchableOpacity,
   TouchableHighlight,
+  View,
 } from 'react-native';
 
 import { Constants } from 'expo';
 
 const token = '';
-
+const getDeployments = 'https://api.zeit.co/v2/now/deployments';
 const headers = {
   Accept: 'application/json',
   Authorization: `Bearer ${token}`,
 };
 
 export default class FetchExample extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      dataSource: null,
-    };
-  }
+  state = {
+    isLoading: true,
+    dataSource: null,
+  };
 
   _loadDeploymentsAsync = async () => {
-    const response = await fetch('https://api.zeit.co/v2/now/deployments', {
-      headers,
-      method: 'GET',
-    });
+    const res = await fetch(getDeployments, { headers });
 
-    const { deployments } = await response.json();
-    
+    const { deployments } = await res.json();
+
     const payload = await this.setState({
       isLoading: false,
       dataSource: deployments,
@@ -45,6 +40,11 @@ export default class FetchExample extends React.Component {
   componentDidMount() {
     this._loadDeploymentsAsync();
   }
+
+  //Task: get openURL working
+  // onPress = () => {
+  //   Linking.openURL();
+  // };
 
   _onPress = () => {
     Alert.alert('Button pressed!', 'You did it!');
@@ -65,57 +65,54 @@ export default class FetchExample extends React.Component {
         <FlatList
           data={this.state.dataSource}
           renderItem={({ item, separators }) =>
-            console.log(item) ||
-            <TouchableHighlight
-              onPress={() => this._onPress(item)}
-              onShowUnderlay={separators.highlight}
-              onHideUnderlay={separators.unhighlight}>
-              <View style={{ backgroundColor: 'yellow' }}>
+            console.log(separators) ||
+            <TouchableOpacity _onPress={() => this._onPress(item.url)}>
+              
+              <View style={{ backgroundColor: 'mistyrose' }}>
+                
                 <View>
-                  <Text>
-                    {' Name: '}
+                  <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
                     {item.name}
                     {' '}
                   </Text>
                 </View>
-                <View>
-
+                
+               <View>
                   <Text>
-                    {'  URL: '}
+                    {'URL: '}
                     {item.url}
                     {' '}
                   </Text>
                 </View>
+
                 <View>
                   <Text>
-                    {'     '}
+                    {'\t'}
                     {item.state}
                     {' '}
                   </Text>
                 </View>
-                <View>
 
+                <View>
                   <Text>
-                    {'     '}
+                    {'\t'}
                     {item.type} {' '}
                   </Text>
                 </View>
-                <View>
 
+                <View>
                   <Text>
-                    {'  Created At: '}
+                    {'Created At: '}
                     {item.created ? new Date(item.created).toString() : null}
-                    {' '}
-                    {' '}
+                    {'\n'}
                   </Text>
                 </View>
 
               </View>
-
-            </TouchableHighlight>}
+            </TouchableOpacity>}
           keyExtractor={this._keyExtractor}
         />
-
+            
       </View>
     );
   }
