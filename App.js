@@ -12,7 +12,7 @@ import {
 
 import { Constants } from 'expo';
 
-const token = '';
+const token = 'HaRGyLVbLuQc6Mtpl8CnUudx';
 
 const headers = {
   Accept: 'application/json',
@@ -34,12 +34,12 @@ export default class FetchExample extends React.Component {
       method: 'GET',
     });
 
-    const payload = await response.json();
-    const deployments = await this.setState({
+    const { deployments } = await response.json();
+    
+    const payload = await this.setState({
       isLoading: false,
-      dataSource: payload,
+      dataSource: deployments,
     });
-    // return deployments;
   };
 
   componentWillMount() {
@@ -48,7 +48,6 @@ export default class FetchExample extends React.Component {
 
   _onPress = () => {
     Alert.alert('Button pressed!', 'You did it!');
-    // console.log(this.deployments)
   };
   _keyExtractor = item => item.uid;
 
@@ -64,7 +63,7 @@ export default class FetchExample extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.dataSource.deployments}
+          data={this.state.dataSource}
           renderItem={({ item, separators }) =>
             console.log(item) ||
             <TouchableHighlight
